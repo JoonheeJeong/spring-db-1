@@ -56,4 +56,24 @@ public class MemberJdbcRepository {
             DBConnectionUtil.close(conn, prepStmt, rs);
         }
     }
+
+    public Member update(Member member) throws SQLException {
+        String sql = "update member set money = ? where member_id = ?";
+
+        Connection conn = null;
+        PreparedStatement prepStmt = null;
+        try {
+            conn = DBConnectionUtil.getConnection();
+            prepStmt = conn.prepareStatement(sql);
+            prepStmt.setInt(1, member.getMoney());
+            prepStmt.setString(2, member.getMemberId());
+            prepStmt.executeUpdate();
+            return member;
+        } catch (SQLException e) {
+            log.error("MemberJdbcRepository#update", e);
+            throw e;
+        } finally {
+            DBConnectionUtil.close(conn, prepStmt, null);
+        }
+    }
 }

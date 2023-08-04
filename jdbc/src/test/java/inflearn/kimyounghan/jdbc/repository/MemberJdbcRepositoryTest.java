@@ -31,4 +31,15 @@ class MemberJdbcRepositoryTest {
         assertThat(member.getMemberId()).isEqualTo(memberId);
     }
 
+    @Test
+    void update() throws SQLException {
+        final String memberId = "member1";
+        final Integer updatedMoney = 30000;
+        Member updatedMember = new Member(memberId, updatedMoney);
+        repo.update(updatedMember);
+
+        Member foundMember = repo.findById(memberId).orElseThrow();
+        assertThat(foundMember).isEqualTo(updatedMember);
+    }
+
 }
