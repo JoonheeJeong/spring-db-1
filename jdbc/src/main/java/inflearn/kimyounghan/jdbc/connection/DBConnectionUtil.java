@@ -19,7 +19,7 @@ public class DBConnectionUtil {
         }
     }
 
-    public static void close(Connection conn, PreparedStatement prepStmt, ResultSet resultSet) {
+    public static void close(Connection conn, PreparedStatement prepStmt, ResultSet rs) {
         if (conn != null) {
             try {
                 conn.close();
@@ -36,9 +36,9 @@ public class DBConnectionUtil {
             }
         }
 
-        if (resultSet != null) {
+        if (rs != null) {
             try {
-                resultSet.close();
+                rs.close();
             } catch (SQLException e) {
                 log.error("close resultSet", e);
             }

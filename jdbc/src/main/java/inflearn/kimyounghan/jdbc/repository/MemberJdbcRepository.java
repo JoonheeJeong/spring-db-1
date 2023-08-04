@@ -6,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 @Slf4j
 public class MemberJdbcRepository {
@@ -28,6 +30,30 @@ public class MemberJdbcRepository {
             throw e;
         } finally {
             DBConnectionUtil.close(conn, prepStmt, null);
+        }
+    }
+
+    public Optional<Member> findById(String memberId) throws SQLException {
+        String sql = "select money from member where member_id = ? ";
+
+        Connection conn = null;
+        PreparedStatement prepStmt = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnectionUtil.getConnection();
+            prepStmt = conn.prepareStatement(sql);
+            prepStmt.setString(1, memberId);
+            rs = prepStmt.executeQuery();
+            if (rs.next()) {
+                Integer money = rs.getInt(1);
+                return Optional.of(new Member(memberId, money));
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            log.error("MemberJdbcRepository#findById", e);
+            throw e;
+        } finally {
+            DBConnectionUtil.close(conn, prepStmt, rs);
         }
     }
 }
