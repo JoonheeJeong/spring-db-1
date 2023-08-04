@@ -76,4 +76,22 @@ public class MemberJdbcRepository {
             DBConnectionUtil.close(conn, prepStmt, null);
         }
     }
+
+    public void deleteById(String memberId) throws SQLException {
+        String sql = "delete from member where member_id = ?";
+
+        Connection conn = null;
+        PreparedStatement prepStmt = null;
+        try {
+            conn = DBConnectionUtil.getConnection();
+            prepStmt = conn.prepareStatement(sql);
+            prepStmt.setString(1, memberId);
+            prepStmt.executeUpdate();
+        } catch (SQLException e) {
+            log.error("MemberJdbcRepository#delete", e);
+            throw e;
+        } finally {
+            DBConnectionUtil.close(conn, prepStmt, null);
+        }
+    }
 }

@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,6 +41,15 @@ class MemberJdbcRepositoryTest {
 
         Member foundMember = repo.findById(memberId).orElseThrow();
         assertThat(foundMember).isEqualTo(updatedMember);
+    }
+
+    @Test
+    void deleteById() throws SQLException {
+        final String memberId = "member1";
+        repo.deleteById(memberId);
+
+        Optional<Member> byId = repo.findById(memberId);
+        assertThat(byId).isEmpty();
     }
 
 }
