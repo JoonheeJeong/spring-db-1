@@ -2,9 +2,7 @@ package inflearn.kimyounghan.jdbc.connection;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 import static inflearn.kimyounghan.jdbc.connection.ConnectionConst.*;
 
@@ -18,6 +16,32 @@ public class DBConnectionUtil {
             return conn;
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
+        }
+    }
+
+    public static void close(Connection conn, PreparedStatement prepStmt, ResultSet resultSet) {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                log.error("close connection", e);
+            }
+        }
+
+        if (prepStmt != null) {
+            try {
+                prepStmt.close();
+            } catch (SQLException e) {
+                log.error("close prepStmt", e);
+            }
+        }
+
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                log.error("close resultSet", e);
+            }
         }
     }
 }
