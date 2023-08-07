@@ -1,7 +1,7 @@
 package inflearn.kimyounghan.jdbc.connection;
 
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.JdbcUtils;
 
 import javax.sql.DataSource;
@@ -20,7 +20,13 @@ public class DBConnectionUtil {
     private final DataSource dataSource;
 
     private DBConnectionUtil() {
-        this.dataSource = new DriverManagerDataSource(URL);
+//        this.dataSource = new DriverManagerDataSource();
+
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl(URL);
+        dataSource.setUsername(USERNAME);
+        dataSource.setPassword(PASSWORD);
+        this.dataSource = dataSource;
     }
 
     public static DBConnectionUtil getInstance() {
@@ -29,7 +35,8 @@ public class DBConnectionUtil {
 
     public Connection getConnection() {
         try {
-            Connection conn = dataSource.getConnection(USERNAME, PASSWORD);
+//            Connection conn = dataSource.getConnection(USERNAME, PASSWORD);
+            Connection conn = dataSource.getConnection();
             log.info("connection: {}, class: {}", conn, conn.getClass());
             return conn;
         } catch (SQLException e) {

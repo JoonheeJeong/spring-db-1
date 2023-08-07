@@ -20,7 +20,7 @@ class MemberJdbcRepositoryTest {
 
     @Test
     void save() throws SQLException {
-        final String memberId = "member2";
+        final String memberId = "member1";
         final Integer money = 20000;
         Member member = repo.save(new Member(memberId, money));
 
