@@ -9,9 +9,11 @@ import java.sql.Connection;
 @Slf4j
 class DBConnectionUtilTest {
 
+    private final DBConnectionUtil dbConnectionUtil = DBConnectionUtil.getInstance();
+
     @Test
     void connection() {
-        Connection conn = DBConnectionUtil.getConnection();
+        Connection conn = dbConnectionUtil.getConnection();
         Assertions.assertThat(conn).isNotNull();
     }
 }
