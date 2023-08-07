@@ -1,7 +1,7 @@
 package inflearn.kimyounghan.jdbc.repository;
 
 import inflearn.kimyounghan.jdbc.domain.Member;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -13,9 +13,14 @@ class MemberJdbcRepositoryTest {
 
     private final MemberJdbcRepository repo = new MemberJdbcRepository();
 
+    @BeforeEach
+    void setup() {
+//        db has Member("member1", 20000)
+    }
+
     @Test
     void save() throws SQLException {
-        final String memberId = "member1";
+        final String memberId = "member2";
         final Integer money = 20000;
         Member member = repo.save(new Member(memberId, money));
 
@@ -35,11 +40,12 @@ class MemberJdbcRepositoryTest {
     @Test
     void update() throws SQLException {
         final String memberId = "member1";
-        final Integer updatedMoney = 30000;
-        Member updatedMember = new Member(memberId, updatedMoney);
-        repo.update(updatedMember);
-
+        final int updatedMoney = 20000;
         Member foundMember = repo.findById(memberId).orElseThrow();
+        foundMember.updateMoney(updatedMoney);
+        Member updatedMember = repo.update(foundMember);
+
+        foundMember = repo.findById(memberId).orElseThrow();
         assertThat(foundMember).isEqualTo(updatedMember);
     }
 
