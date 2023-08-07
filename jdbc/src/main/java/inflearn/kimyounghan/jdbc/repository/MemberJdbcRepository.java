@@ -13,13 +13,15 @@ import java.util.Optional;
 @Slf4j
 public class MemberJdbcRepository {
 
+    private final DBConnectionUtil dbConnectionUtil = DBConnectionUtil.getInstance();
+
     public Member save(Member member) throws SQLException {
         String sql = "insert into member (member_id, money) values (?, ?)";
 
         Connection conn = null;
         PreparedStatement prepStmt = null;
         try {
-            conn = DBConnectionUtil.getConnection();
+            conn = dbConnectionUtil.getConnection();
             prepStmt = conn.prepareStatement(sql);
             prepStmt.setString(1, member.getMemberId());
             prepStmt.setInt(2, member.getMoney());
@@ -29,7 +31,7 @@ public class MemberJdbcRepository {
             log.error("MemberJdbcRepository#save", e);
             throw e;
         } finally {
-            DBConnectionUtil.close(conn, prepStmt, null);
+            dbConnectionUtil.close(conn, prepStmt, null);
         }
     }
 
@@ -40,7 +42,7 @@ public class MemberJdbcRepository {
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         try {
-            conn = DBConnectionUtil.getConnection();
+            conn = dbConnectionUtil.getConnection();
             prepStmt = conn.prepareStatement(sql);
             prepStmt.setString(1, memberId);
             rs = prepStmt.executeQuery();
@@ -53,7 +55,7 @@ public class MemberJdbcRepository {
             log.error("MemberJdbcRepository#findById", e);
             throw e;
         } finally {
-            DBConnectionUtil.close(conn, prepStmt, rs);
+            dbConnectionUtil.close(conn, prepStmt, rs);
         }
     }
 
@@ -63,7 +65,7 @@ public class MemberJdbcRepository {
         Connection conn = null;
         PreparedStatement prepStmt = null;
         try {
-            conn = DBConnectionUtil.getConnection();
+            conn = dbConnectionUtil.getConnection();
             prepStmt = conn.prepareStatement(sql);
             prepStmt.setInt(1, member.getMoney());
             prepStmt.setString(2, member.getMemberId());
@@ -73,7 +75,7 @@ public class MemberJdbcRepository {
             log.error("MemberJdbcRepository#update", e);
             throw e;
         } finally {
-            DBConnectionUtil.close(conn, prepStmt, null);
+            dbConnectionUtil.close(conn, prepStmt, null);
         }
     }
 
@@ -83,7 +85,7 @@ public class MemberJdbcRepository {
         Connection conn = null;
         PreparedStatement prepStmt = null;
         try {
-            conn = DBConnectionUtil.getConnection();
+            conn = dbConnectionUtil.getConnection();
             prepStmt = conn.prepareStatement(sql);
             prepStmt.setString(1, memberId);
             prepStmt.executeUpdate();
@@ -91,7 +93,7 @@ public class MemberJdbcRepository {
             log.error("MemberJdbcRepository#delete", e);
             throw e;
         } finally {
-            DBConnectionUtil.close(conn, prepStmt, null);
+            dbConnectionUtil.close(conn, prepStmt, null);
         }
     }
 }
