@@ -1,14 +1,18 @@
 package inflearn.kimyounghan.jdbc.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 public class Member {
 
     private final String memberId;
-    private final Integer money;
+    private Integer money;
+
+    public void updateMoney(Integer money) {
+        this.money = money;
+    }
 }
