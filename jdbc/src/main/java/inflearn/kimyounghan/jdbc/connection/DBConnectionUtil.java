@@ -2,6 +2,7 @@ package inflearn.kimyounghan.jdbc.connection;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.support.JdbcUtils;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -37,28 +38,8 @@ public class DBConnectionUtil {
     }
 
     public void close(Connection conn, PreparedStatement prepStmt, ResultSet rs) {
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                log.error("close connection", e);
-            }
-        }
-
-        if (prepStmt != null) {
-            try {
-                prepStmt.close();
-            } catch (SQLException e) {
-                log.error("close prepStmt", e);
-            }
-        }
-
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                log.error("close resultSet", e);
-            }
-        }
+        JdbcUtils.closeConnection(conn);
+        JdbcUtils.closeStatement(prepStmt);
+        JdbcUtils.closeResultSet(rs);
     }
 }
