@@ -53,15 +53,13 @@ class MemberServiceV1Test {
         memberJdbcRepository.save(memberEx);
 
         // when
-        // then
         Assertions.assertThatThrownBy(() ->
                 memberServiceV1.accountTransfer(memberA.getMemberId(), memberEx.getMemberId(), 2000))
                 .isInstanceOf(IllegalArgumentException.class);
 
-
+        // then
         Member memberAFound = memberJdbcRepository.findById(memberA.getMemberId()).orElseThrow();
         Member memberBFound = memberJdbcRepository.findById(memberEx.getMemberId()).orElseThrow();
-
         assertThat(memberAFound.getMoney()).isEqualTo(8000);
         assertThat(memberBFound.getMoney()).isEqualTo(10000);
     }
