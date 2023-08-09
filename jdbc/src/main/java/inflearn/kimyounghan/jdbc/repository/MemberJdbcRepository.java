@@ -59,6 +59,28 @@ public class MemberJdbcRepository {
         }
     }
 
+    public Optional<Member> findById(Connection conn, String memberId) throws SQLException {
+        String sql = "select money from member where member_id = ? ";
+
+        PreparedStatement prepStmt = null;
+        ResultSet rs = null;
+        try {
+            prepStmt = conn.prepareStatement(sql);
+            prepStmt.setString(1, memberId);
+            rs = prepStmt.executeQuery();
+            if (rs.next()) {
+                Integer money = rs.getInt(1);
+                return Optional.of(new Member(memberId, money));
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            log.error("MemberJdbcRepository#findById", e);
+            throw e;
+        } finally {
+            dbConnectionUtil.close(null, prepStmt, rs);
+        }
+    }
+
     public Member update(Member member) throws SQLException {
         String sql = "update member set money = ? where member_id = ?";
 
@@ -76,6 +98,24 @@ public class MemberJdbcRepository {
             throw e;
         } finally {
             dbConnectionUtil.close(conn, prepStmt, null);
+        }
+    }
+
+    public Member update(Connection conn, Member member) throws SQLException {
+        String sql = "update member set money = ? where member_id = ?";
+
+        PreparedStatement prepStmt = null;
+        try {
+            prepStmt = conn.prepareStatement(sql);
+            prepStmt.setInt(1, member.getMoney());
+            prepStmt.setString(2, member.getMemberId());
+            prepStmt.executeUpdate();
+            return member;
+        } catch (SQLException e) {
+            log.error("MemberJdbcRepository#update", e);
+            throw e;
+        } finally {
+            dbConnectionUtil.close(null, prepStmt, null);
         }
     }
 
