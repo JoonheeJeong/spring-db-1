@@ -11,10 +11,10 @@ import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MemberServiceV2Test {
+class MemberTransactionServiceTest {
 
     private final MemberJdbcRepository memberJdbcRepository = new MemberJdbcRepository();
-    private final MemberServiceV2 memberServiceV2 = new MemberServiceV2(memberJdbcRepository);
+    private final MemberTransactionService memberTransactionService = new MemberTransactionService(memberJdbcRepository);
 
     @BeforeEach
     void setup() throws SQLException {
@@ -33,7 +33,7 @@ class MemberServiceV2Test {
         memberJdbcRepository.save(memberB);
 
         // when
-        memberServiceV2.accountTransfer(memberA.getMemberId(), memberB.getMemberId(), 2000);
+        memberTransactionService.accountTransfer(memberA.getMemberId(), memberB.getMemberId(), 2000);
 
         // then
         Member memberAFound = memberJdbcRepository.findById(memberA.getMemberId()).orElseThrow();
@@ -54,7 +54,7 @@ class MemberServiceV2Test {
 
         // when
         Assertions.assertThatThrownBy(() ->
-                memberServiceV2.accountTransfer(memberA.getMemberId(), memberEx.getMemberId(), 2000))
+                memberTransactionService.accountTransfer(memberA.getMemberId(), memberEx.getMemberId(), 2000))
                 .isInstanceOf(IllegalArgumentException.class);
 
         // then

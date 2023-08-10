@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class MemberServiceV2 {
+public class MemberTransactionService {
 
     private final DBConnectionUtil dbConnectionUtil = DBConnectionUtil.getInstance();
     private final MemberJdbcRepository memberJdbcRepository;
