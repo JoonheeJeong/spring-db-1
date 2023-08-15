@@ -20,6 +20,11 @@ public class MemberJdbcRepositoryV3  {
         this.dbConnectionUtil = DBConnectionUtil.getInstance(dataSourceClass);
     }
 
+    public MemberJdbcRepositoryV3(DataSource dataSource) {
+        this.dbConnectionUtil = DBConnectionUtil.getInstance();
+        this.dbConnectionUtil.setDateSource(dataSource);
+    }
+
     public Member save(Member member) throws SQLException {
         String sql = "insert into member (member_id, money) values (?, ?)";
 
