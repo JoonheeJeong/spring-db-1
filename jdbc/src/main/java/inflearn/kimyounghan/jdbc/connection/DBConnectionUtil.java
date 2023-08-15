@@ -57,6 +57,10 @@ public class DBConnectionUtil {
         return dataSource;
     }
 
+    public void setDateSource(DataSource dataSource) {
+        DBConnectionUtil.dataSource = dataSource;
+    }
+
     private static DriverManagerDataSource getDriverManagerDataSource() {
         return new DriverManagerDataSource(URL, USERNAME, PASSWORD);
     }
