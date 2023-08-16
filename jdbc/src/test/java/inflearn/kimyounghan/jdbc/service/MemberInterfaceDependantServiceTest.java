@@ -3,6 +3,7 @@ package inflearn.kimyounghan.jdbc.service;
 import inflearn.kimyounghan.jdbc.domain.Member;
 import inflearn.kimyounghan.jdbc.repository.MemberJdbcExceptionAbstractionRepository;
 import inflearn.kimyounghan.jdbc.repository.MemberJdbcRepositoryV4;
+import inflearn.kimyounghan.jdbc.repository.MemberJdbcTemplateRepository;
 import inflearn.kimyounghan.jdbc.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,8 @@ class MemberInterfaceDependantServiceTest {
         @Bean
         MemberRepository memberRepository() {
 //            return new MemberJdbcRepositoryV4(dataSource);
-            return new MemberJdbcExceptionAbstractionRepository(dataSource);
+//            return new MemberJdbcExceptionAbstractionRepository(dataSource);
+            return new MemberJdbcTemplateRepository(dataSource);
         }
         @Bean
         MemberInterfaceDependantService memberService() {
